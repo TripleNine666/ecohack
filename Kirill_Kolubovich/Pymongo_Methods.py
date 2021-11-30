@@ -79,3 +79,15 @@ def delete_one():
 
 
 # edit
+@app.route('/update/', methods=['PUT'])
+def update_one(name):
+  agro = mongo.db.AgroUsad
+  s = agro.find_one({"name": name})
+  if s:
+    # Values to be updated.
+    new_values = {"$set": request.get_json()}
+    agro.updateOne({s}, new_values)
+    return jsonify({'result': "success"})
+  else:
+    output = "No such name"
+  return jsonify({'result': output})
